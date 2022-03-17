@@ -16,9 +16,10 @@ async function buildShader() {
         {file: './shaders/complexNumbers.glsl'},
         {file: './shaders/modelConversions.glsl'},
         {file: './shaders/isometries.glsl'},
-        {file: './shaders/points.glsl'},
+        {file: './shaders/pointsAndCircles.glsl'},
         {file: './shaders/horocycles.glsl'},
         {file: './shaders/geodesics.glsl'},
+        {file: './shaders/halfSpaces.glsl'},
         {file: './shaders/polygons.glsl'},
         {file: './shaders/main.glsl'},
     ];

@@ -10,30 +10,49 @@
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 
+
+
     //setting up a geodesic triangle:
 
     //vertical geodesic
     Geodesic side1 = Geodesic(0.,infty);
     HalfSpace h1 = HalfSpace(side1,1.);
 
-
-    //unit circle
-    Geodesic side2 = Geodesic(-1.,1.);
-    HalfSpace h2 = HalfSpace(side2,1.);
-
-
-    //annoying one to make angles pi/P and pi/Q
-    float ang = cos(PI/Q)/sin(PI/P);
-    float h=exp(acosh(ang));
-    float side = h/tan(PI/P);
-    float rad = h/sin(PI/P);
-
-    float end1=-side-rad;
-    float end2=-side+rad;
+    //side making angle Pi/Q with the vertical, intersecting at i
+    float ang = tan(PI/(2.*Q));
+    Geodesic side2 = Geodesic(-ang,1./ang);
+    HalfSpace h2 = HalfSpace(side2, 1.);
 
 
-    Geodesic side3 = Geodesic(end1,end2);
-    HalfSpace h3 = HalfSpace(side3,-1.);
+    //side making angle PI/R with vertical, intersecting at e^a*i
+    float num  = cos(PI/P) + cos(PI/Q) * cos(PI/R);
+    float denom = sin(PI/Q) * sin(PI/R);
+    //cosha is from the hyperbolic law of cosines
+    float cosha = num/denom;
+
+    //since acosh(z)=log(z+sqrt(z^2-1)), the following is exp(a)= exp(acosh(cosh(a))
+    float x = cosha + sqrt(cosha*cosha-1.);
+
+    //angle here is tanPi/r
+    ang = tan(PI/(2.*R));
+    Geodesic side3 = Geodesic(-x/ang,x*ang);
+    HalfSpace h3 = HalfSpace(side3, -1.);
+
+
+
+
+//    //annoying one to make angles pi/P and pi/Q
+//    float ang = cos(PI/Q)/sin(PI/P);
+//    float h=exp(acosh(ang));
+//    float side = h/tan(PI/P);
+//    float rad = h/sin(PI/P);
+//
+//    float end1=-side-rad;
+//    float end2=-side+rad;
+//
+//
+//    Geodesic side3 = Geodesic(end1,end2);
+//    HalfSpace h3 = HalfSpace(side3,-1.);
 
     Triangle T = Triangle(h1,h2,h3);
 

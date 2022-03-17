@@ -14,8 +14,6 @@ vec2 I = vec2(0.,1.);
 //the funciton isinf() tests if a value is infinite, returning a boolean
 float infty = 1./0.;
 
-float P = 3.;
-float Q = 7.;
 
 
 
@@ -34,6 +32,10 @@ vec3 darkPurple = vec3(110, 155, 240)/255. + vec3(0.3,0,0);
 vec3 lightGreen = vec3(149, 245, 181)/255.;
 
 vec3 pink = vec3(255, 117, 133)/255.;
+
+float P = 3.;
+float Q = 7.;
+float R = 4.;
 
 
 //----------------------------------------------
