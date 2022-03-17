@@ -33,9 +33,9 @@ vec3 lightGreen = vec3(149, 245, 181)/255.;
 
 vec3 pink = vec3(255, 117, 133)/255.;
 
-float P = 3.;
-float Q = 7.;
-float R = 4.;
+float P = 2.;
+float Q = 3.;
+float R = 7.;
 
 
 //----------------------------------------------

@@ -7,68 +7,29 @@
 //----------------------------------------------
 
 
+
+
+
+
+
+
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 
-
-
-    //setting up a geodesic triangle:
-
-    //vertical geodesic
-    Geodesic side1 = Geodesic(0.,infty);
-    HalfSpace h1 = HalfSpace(side1,1.);
-
-    //side making angle Pi/Q with the vertical, intersecting at i
-    float ang = tan(PI/(2.*Q));
-    Geodesic side2 = Geodesic(-ang,1./ang);
-    HalfSpace h2 = HalfSpace(side2, 1.);
-
-
-    //side making angle PI/R with vertical, intersecting at e^a*i
-    float num  = cos(PI/P) + cos(PI/Q) * cos(PI/R);
-    float denom = sin(PI/Q) * sin(PI/R);
-    //cosha is from the hyperbolic law of cosines
-    float cosha = num/denom;
-
-    //since acosh(z)=log(z+sqrt(z^2-1)), the following is exp(a)= exp(acosh(cosh(a))
-    float x = cosha + sqrt(cosha*cosha-1.);
-
-    //angle here is tanPi/r
-    ang = tan(PI/(2.*R));
-    Geodesic side3 = Geodesic(-x/ang,x*ang);
-    HalfSpace h3 = HalfSpace(side3, -1.);
-
-
-
-
-//    //annoying one to make angles pi/P and pi/Q
-//    float ang = cos(PI/Q)/sin(PI/P);
-//    float h=exp(acosh(ang));
-//    float side = h/tan(PI/P);
-//    float rad = h/sin(PI/P);
-//
-//    float end1=-side-rad;
-//    float end2=-side+rad;
-//
-//
-//    Geodesic side3 = Geodesic(end1,end2);
-//    HalfSpace h3 = HalfSpace(side3,-1.);
-
-    Triangle T = Triangle(h1,h2,h3);
-
-
-
-
-
     //the vector that will store our final color:
     vec3 color=vec3(0);
-
+    //an overall scaling factor to lighten/darken the image
+    float adjustment = 1.;
 
     // Normalized pixel coordinates
     vec2 z = normalizeCoords( fragCoord );
 
     //check if insidePD
-    if(insidePD(z)){
+    //if not, turn down the exposure
+    if(!insidePD(z)){
+        adjustment =0.2;
+    }
 
         //set background color of the disk
         color = darkBlue;
@@ -77,40 +38,187 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         z = mouseTransform(z);
         z = toUH(z);
 
+
+        Triangle T = createTriangle(7,2,3);
+
         //color the triangle blue
         if(inside(z,T)){
             color=pink;
         }
 
 
-        vec2 w;
+
+
+
+    int word[12];
+
+    word= int[](0,0,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,0,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,3,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,3,2,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,3,2,3,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,3,2,3,2,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,3,2,3,2,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,3,2,3,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,3,2,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,3,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,0,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,0,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,2,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,2,3,2,3,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,2,3,2,3,2,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,3,0,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,3,2,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,3,2,3,2,3,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,3,2,3,2,3,2,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,3,2,3,2,3,2,3,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,1,0,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,1,2,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,1,3,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,2,1,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,2,1,3,2,3,2,3,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](1,2,3,2,1,3,2,3,2,3,2,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,2,3,1,0,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,2,3,1,2,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,2,3,1,3,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,1,2,3,2,1,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,1,2,3,2,1,3,2,3,2,3,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,1,2,3,2,1,3,2,3,2,3,2);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,3,1,3,0,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](3,2,3,1,3,2,3,2,3,2,3,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,3,1,3,0,0,0,0,0,0);
+    colorTriangle(z,T,word,color);
+
+    word= int[](2,3,2,3,1,3,2,3,2,3,2,3);
+    colorTriangle(z,T,word,color);
+
+
+
+
+
+
+
+    vec2 w;
         float d;
 
 
 
         w = moveInto(z,T);
-        d = dist(w, h1.bdy);
-        d = min(d, dist(w, h2.bdy));
-        d = min(d, dist(w, h3.bdy));
-        if(d<0.03){color=lightPurple;}
+        d = dist(w, T.a.bdy);
+        d = min(d, dist(w, T.b.bdy));
+        d = min(d, dist(w, T.c.bdy));
+        if(d<0.015){color=lightPurple;}
 
         //color the edges of the triangle touching Vertex23
-        w = moveToWedge(z,h2,h3);
-        d = min(dist(w,h2.bdy),dist(w,h3.bdy));
+        w = moveToWedge(z,T.b,T.c);
+        d = min(dist(w,T.b.bdy),dist(w,T.c.bdy));
         if(d<0.03){color=lightGreen;}
 
         //color the edges of the triangle touching Vertex12
-        w = moveToWedge(z,h1,h2);
-        d = min(dist(w,h1.bdy),dist(w,h2.bdy));
+        w = moveToWedge(z,T.a,T.b);
+        d = min(dist(w,T.a.bdy),dist(w,T.b.bdy));
         if(d<0.03){color=lightGreen;}
 
         //color the edges of the triangle touching Vertex13
-        w = moveToWedge(z,h1,h3);
-        d = min(dist(w,h1.bdy),dist(w,h3.bdy));
+        w = moveToWedge(z,T.a,T.c);
+        d = min(dist(w,T.a.bdy),dist(w,T.c.bdy));
         if(d<0.03){color=lightGreen;}
 
 
-    }
 
+
+
+
+
+
+
+
+
+    //take the computed color and apply the adjustment
+    color = adjustment*color;
+    //output to the computer screen
     fragColor=vec4(color,1);
 }
