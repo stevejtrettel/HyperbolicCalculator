@@ -1,5 +1,8 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
 
+import { buildShader } from "./buildShader.js";
+
+
 async function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({
@@ -38,10 +41,6 @@ async function main() {
 
 
 
-    //load the fragment shader file
-    const response = await fetch('./fragmentShader.glsl');
-    const shaderToy = await response.text();
-
     //call the fixed starting and ending code that goes around the shadertoy
     const shaderStart = `
   uniform vec3 iResolution;
@@ -54,6 +53,9 @@ uniform vec4 iMouse;
     mainImage(gl_FragColor, gl_FragCoord.xy);
   }
   `;
+
+
+    const shaderToy=await buildShader();
 
     const fShader = shaderStart.concat(shaderToy.concat(shaderEnd));
 
