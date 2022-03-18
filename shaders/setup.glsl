@@ -27,9 +27,10 @@ vec3 darkBlue = vec3(110, 155, 240)/255.;
 
 vec3 lightPurple = vec3(170,210,255)/255. + vec3(0.2,0,0);
 vec3 medPurple = vec3(120, 170, 250)/255. + vec3(0.3,0,0);
-vec3 darkPurple = vec3(110, 155, 240)/255. + vec3(0.3,0,0);
+vec3 darkPurple = 0.7*(vec3(110, 155, 240)/255. + vec3(0.3,0,0));
 
 vec3 lightGreen = vec3(149, 245, 181)/255.;
+vec3 medGreen = vec3(149, 245, 181)/255.;
 
 vec3 pink = vec3(255, 117, 133)/255.;
 

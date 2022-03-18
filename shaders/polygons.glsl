@@ -132,7 +132,7 @@ vec2 computeWordInverse(vec2 z, Triangle T, int word[12]){
 void colorTriangle(vec2 z, Triangle T, int[12] word, inout vec3 color){
     vec2 res = computeWordInverse(z,T,word);
     if(inside(res,T)){
-        color=vec3(1,0,0);
+        color=pink;
     }
 }
 

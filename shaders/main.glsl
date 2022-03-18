@@ -39,6 +39,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         z = toUH(z);
 
 
+
+
+
+
+
+
+
         Triangle T = createTriangle(7,2,3);
 
         //color the triangle blue
@@ -47,133 +54,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         }
 
 
+        Horocycle horo = Horocycle(0.,0.);
+
+        if(inside(z, horo)){
+            color=lightGreen;
+        }
 
 
 
-    int word[12];
 
-    word= int[](0,0,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,0,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,3,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,3,2,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,3,2,3,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,3,2,3,2,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,3,2,3,2,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,3,2,3,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,3,2,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,3,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,0,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,0,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,2,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,2,3,2,3,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,2,3,2,3,2,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,3,0,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,3,2,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,3,2,3,2,3,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,3,2,3,2,3,2,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,3,2,3,2,3,2,3,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,1,0,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,1,2,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,1,3,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,2,1,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,2,1,3,2,3,2,3,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](1,2,3,2,1,3,2,3,2,3,2,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,2,3,1,0,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,2,3,1,2,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,2,3,1,3,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,1,2,3,2,1,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,1,2,3,2,1,3,2,3,2,3,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,1,2,3,2,1,3,2,3,2,3,2);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,3,1,3,0,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](3,2,3,1,3,2,3,2,3,2,3,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,3,1,3,0,0,0,0,0,0);
-    colorTriangle(z,T,word,color);
-
-    word= int[](2,3,2,3,1,3,2,3,2,3,2,3);
-    colorTriangle(z,T,word,color);
+        Geodesic geo = Geodesic(-1.,2.);
+        if(dist(z,geo)<0.03){
+            color=darkPurple;
+        }
 
 
 
@@ -181,33 +74,165 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
-    vec2 w;
-        float d;
+//
+//    int word[12];
+//
+//    word= int[](0,0,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,0,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,3,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,3,2,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,3,2,3,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,3,2,3,2,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,3,2,3,2,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,3,2,3,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,3,2,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,3,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,0,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,0,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,2,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,2,3,2,3,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,2,3,2,3,2,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,3,0,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,3,2,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,3,2,3,2,3,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,3,2,3,2,3,2,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,3,2,3,2,3,2,3,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,1,0,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,1,2,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,1,3,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,2,1,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,2,1,3,2,3,2,3,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](1,2,3,2,1,3,2,3,2,3,2,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,2,3,1,0,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,2,3,1,2,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,2,3,1,3,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,1,2,3,2,1,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,1,2,3,2,1,3,2,3,2,3,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,1,2,3,2,1,3,2,3,2,3,2);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,3,1,3,0,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](3,2,3,1,3,2,3,2,3,2,3,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,3,1,3,0,0,0,0,0,0);
+//    colorTriangle(z,T,word,color);
+//
+//    word= int[](2,3,2,3,1,3,2,3,2,3,2,3);
+//    colorTriangle(z,T,word,color);
+//
+//
+//
 
 
 
-        w = moveInto(z,T);
-        d = dist(w, T.a.bdy);
-        d = min(d, dist(w, T.b.bdy));
-        d = min(d, dist(w, T.c.bdy));
-        if(d<0.015){color=lightPurple;}
-
-        //color the edges of the triangle touching Vertex23
-        w = moveToWedge(z,T.b,T.c);
-        d = min(dist(w,T.b.bdy),dist(w,T.c.bdy));
-        if(d<0.03){color=lightGreen;}
-
-        //color the edges of the triangle touching Vertex12
-        w = moveToWedge(z,T.a,T.b);
-        d = min(dist(w,T.a.bdy),dist(w,T.b.bdy));
-        if(d<0.03){color=lightGreen;}
-
-        //color the edges of the triangle touching Vertex13
-        w = moveToWedge(z,T.a,T.c);
-        d = min(dist(w,T.a.bdy),dist(w,T.c.bdy));
-        if(d<0.03){color=lightGreen;}
-
-
+//
+//    vec2 w;
+//        float d;
+//
+//
+//
+//        w = moveInto(z,T);
+//        d = dist(w, T.a.bdy);
+//        d = min(d, dist(w, T.b.bdy));
+//        d = min(d, dist(w, T.c.bdy));
+//        if(d<0.015){color=lightPurple;}
+//
+//        //color the edges of the triangle touching Vertex23
+//        w = moveToWedge(z,T.b,T.c);
+//        d = min(dist(w,T.b.bdy),dist(w,T.c.bdy));
+//        if(d<0.03){color=lightGreen;}
+//
+//        //color the edges of the triangle touching Vertex12
+//        w = moveToWedge(z,T.a,T.b);
+//        d = min(dist(w,T.a.bdy),dist(w,T.b.bdy));
+//        if(d<0.03){color=lightGreen;}
+//
+//        //color the edges of the triangle touching Vertex13
+//        w = moveToWedge(z,T.a,T.c);
+//        d = min(dist(w,T.a.bdy),dist(w,T.c.bdy));
+//        if(d<0.03){color=lightGreen;}
+//
+//
 
 
 
