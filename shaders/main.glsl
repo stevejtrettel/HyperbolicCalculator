@@ -44,11 +44,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
+    //Triangle T = createTriangle(7,2,3);
 
+    HalfSpace hs1 = HalfSpace(Geodesic(0.,infty),1.);
+    HalfSpace hs2 = HalfSpace(Geodesic(0.5,infty),-1.);
+    HalfSpace hs3 = HalfSpace(Geodesic(-1.,1.),-1.);
+    Triangle T = Triangle(hs1, hs2, hs3);
 
-        Triangle T = createTriangle(7,2,3);
-
-        //color the triangle blue
         if(inside(z,T)){
             color=pink;
         }
@@ -61,12 +63,22 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         }
 
 
-
-
         Geodesic geo = Geodesic(-1.,2.);
         if(dist(z,geo)<0.03){
             color=darkPurple;
         }
+
+
+
+//        vec2 w;
+//        float d;
+//            w = moveInto(z,T);
+//            d = dist(w, T.a.bdy);
+//            d = min(d, dist(w, T.b.bdy));
+//            d = min(d, dist(w, T.c.bdy));
+//            if(d<0.015){color=lightPurple;}
+
+
 
 
 

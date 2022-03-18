@@ -60,6 +60,9 @@ Triangle createTriangle(int p, int q, int r){
     float P = float(p);
     float Q = float(q);
     float R = float(r);
+//    float P = float(p);
+//    float Q = float(q);
+//    float R = float(r);
 
 
     //setting up a geodesic triangle:
@@ -142,6 +145,117 @@ void colorTriangleInverse(vec2 z, Triangle T, int[12] word, inout vec3 color){
         color=vec3(1,1,0);
     }
 }
+
+
+
+
+
+
+
+
+
+//------------------------------------------
+//Right Angled Pentagons
+//------------------------------------------
+
+//a  right angled pentagon is the intersection of 5 orthognal half spaces
+//we will call these a, b, c, d, and e
+struct Pentagon{
+    HalfSpace a;
+    HalfSpace b;
+    HalfSpace c;
+    HalfSpace d;
+    HalfSpace e;
+};
+
+
+
+
+bool inside(vec2 z, Pentagon P){
+    //check if you are inside all three half-spaces
+    return inside(z,P.a)&&inside(z,P.b)&&inside(z,P.c)&&inside(z,P.d)&&inside(z,P.e);
+}
+
+
+
+//reflect in each side of the triangle,
+//if the point is on the wrong side of the half space
+vec2 reflectIn(vec2 z, Pentagon P){
+    z = reflectIn(z, P.a);
+    z = reflectIn(z, P.b);
+    z = reflectIn(z, P.c);
+    z = reflectIn(z, P.d);
+    z = reflectIn(z, P.e);
+    return z;
+}
+
+
+//iteratively reflect in the triangle until you end up
+//in the fundamental domain
+vec2 moveInto(vec2 z, Pentagon P){
+
+    for(int i=0;i<50;i++){
+        z=reflectIn(z,P);
+        if(inside(z,P)){
+            break;
+        }
+    }
+
+    return z;
+
+}
+
+
+
+
+Pentagon createPentagon(float A, float B){
+
+    //to the right of the vertical line
+    HalfSpace a = HalfSpace(Geodesic(0.,infty),1.);
+
+    //above the unit circle
+    HalfSpace b = HalfSpace(Geodesic(-1.,1.),-1.);
+
+    //above the circle which is translate of vertical line along unit circle by dist B
+    HalfSpace c = HalfSpace(Geodesic(tanh(B/2.),1./tanh(B/2.)),-1.);
+
+    //below the circle at height A above unit circle
+    HalfSpace e = HalfSpace(Geodesic(exp(A),exp(-A)),1.);
+
+    //this circle is the result of an annoying computation
+    float coshD=sinh(A)*sinh(B);
+    float sinhD=sqrt(coshD*coshD-1.);
+    float C = asinh(cosh(B)/sinhD);
+
+    float eB=exp(B);
+    float eC=exp(C);
+
+    float num1 = -1.+eB+eC+eB*eC;
+    float num2 = 1.-eB+eC+eB*eC;
+    float denom = 1.+eB+eC-eB*eC;
+
+    float end1 = num1/denom;
+    float end2 = -num2/denom;
+
+    HalfSpace d = HalfSpace(Geodesic(end1,end2),1.);
+
+    Pentagon P = Pentagon(a,b,c,d,e);
+    return P;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
