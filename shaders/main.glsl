@@ -44,40 +44,38 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
-    //Triangle T = createTriangle(7,2,3);
-
-    HalfSpace hs1 = HalfSpace(Geodesic(0.,infty),1.);
-    HalfSpace hs2 = HalfSpace(Geodesic(0.5,infty),-1.);
-    HalfSpace hs3 = HalfSpace(Geodesic(-1.,1.),-1.);
-    Triangle T = Triangle(hs1, hs2, hs3);
-
-        if(inside(z,T)){
-            color=pink;
-        }
+//    Triangle T = createTriangle(7,2,3);
+//
+//        if(inside(z,T)){
+//            color=pink;
+//        }
 
 
-        Horocycle horo = Horocycle(0.,0.);
+//        Horocycle horo = Horocycle(0.,0.);
+//
+//        if(inside(z, horo)){
+//            color=lightGreen;
+//        }
+//
+//
 
-        if(inside(z, horo)){
-            color=lightGreen;
-        }
+//
+//    Geodesic geo = Geodesic(0.,infty);
+//        if(dist(z,geo)<0.03){
+//            color=darkPurple;
+//        }
 
+//
 
-        Geodesic geo = Geodesic(-1.,2.);
-        if(dist(z,geo)<0.03){
-            color=darkPurple;
-        }
+    Pentagon P = createPentagon(1.2+0.1*sin(iTime),1.+0.2*sin(iTime/2.));
 
+    if(inside(z,P)){
+        color=pink;
+    }
 
-
-//        vec2 w;
-//        float d;
-//            w = moveInto(z,T);
-//            d = dist(w, T.a.bdy);
-//            d = min(d, dist(w, T.b.bdy));
-//            d = min(d, dist(w, T.c.bdy));
-//            if(d<0.015){color=lightPurple;}
-
+    vec2 w = moveInto(z,P);
+    float d = dist(w, P);
+    if(d<0.015){color=lightPurple;}
 
 
 
@@ -85,7 +83,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
+//        Triangle T = createTriangle(7,2,3);
+//
+//            if(inside(z,T)){
+//                color=pink;
+//            }
 
+
+//
 //
 //    int word[12];
 //
@@ -214,7 +219,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 //
 //
 //
-
+//
 
 
 //
@@ -245,8 +250,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 //        if(d<0.03){color=lightGreen;}
 //
 //
-
-
+//
+//
 
 
 

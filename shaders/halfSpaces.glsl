@@ -7,8 +7,8 @@
 
 //a half space is bounded by a geodesic,
 //and is all the area on one side of it
-//side is + if it contains a portion of the real line (bounded area in model)
-//side is - if it contains infinity
+//side is - if it contains a portion of the real line (bounded area in model)
+//side is + if it contains infinity
 struct HalfSpace{
     Geodesic bdy;
     float side;
@@ -43,7 +43,7 @@ bool inside(vec2 z, HalfSpace hs){
         //get radius
         float dist2 = dot(rel,rel);
 
-        //get inside (-) or outside (+) circle
+        //get inside (+) or outside (-) circle
         float side = sign(dist2-radius*radius);
 
         //return true (+) if in half space, false if not

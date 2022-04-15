@@ -52,6 +52,13 @@ vec2 moveInto(vec2 z, Triangle T){
 
 }
 
+float dist( vec2 z, Triangle T){
+    float d;
+    d = dist(z, T.a.bdy);
+    d = min(d, dist(z, T.b.bdy));
+    d = min(d, dist(z, T.c.bdy));
+    return d;
+}
 
 
 
@@ -95,6 +102,9 @@ Triangle createTriangle(int p, int q, int r){
 
     return T;
 }
+
+
+
 
 
 
@@ -206,6 +216,16 @@ vec2 moveInto(vec2 z, Pentagon P){
 }
 
 
+float dist( vec2 z, Pentagon P){
+    float d;
+    d = dist(z, P.a.bdy);
+    d = min(d, dist(z, P.b.bdy));
+    d = min(d, dist(z, P.c.bdy));
+    d = min(d, dist(z, P.d.bdy));
+    d = min(d, dist(z, P.e.bdy));
+    return d;
+}
+
 
 
 Pentagon createPentagon(float A, float B){
@@ -214,29 +234,44 @@ Pentagon createPentagon(float A, float B){
     HalfSpace a = HalfSpace(Geodesic(0.,infty),1.);
 
     //above the unit circle
-    HalfSpace b = HalfSpace(Geodesic(-1.,1.),-1.);
+    HalfSpace b = HalfSpace(Geodesic(-1.,1.),1.);
 
     //above the circle which is translate of vertical line along unit circle by dist B
-    HalfSpace c = HalfSpace(Geodesic(tanh(B/2.),1./tanh(B/2.)),-1.);
+    HalfSpace c = HalfSpace(Geodesic(tanh(B/2.),1./tanh(B/2.)),1.);
+
+
+    //HalfSpace c = HalfSpace(Geodesic((cosh(B)-1.)/sinh(B),(cosh(B)+1.)/sinh(B)),1.);
+
+
 
     //below the circle at height A above unit circle
-    HalfSpace e = HalfSpace(Geodesic(exp(A),exp(-A)),1.);
+    HalfSpace e = HalfSpace(Geodesic(exp(A),-exp(A)),-1.);
 
-    //this circle is the result of an annoying computation
-    float coshD=sinh(A)*sinh(B);
-    float sinhD=sqrt(coshD*coshD-1.);
-    float C = asinh(cosh(B)/sinhD);
 
-    float eB=exp(B);
-    float eC=exp(C);
 
-    float num1 = -1.+eB+eC+eB*eC;
-    float num2 = 1.-eB+eC+eB*eC;
-    float denom = 1.+eB+eC-eB*eC;
 
-    float end1 = num1/denom;
-    float end2 = -num2/denom;
 
+    //this final circle is the result of an annoying computation
+    float cA = cosh(A);
+    float sA = sinh(A);
+    float cB = cosh(B);
+    float sB = sinh(B);
+
+    float cD = sA*sB;
+    float sD = sqrt(cD*cD-1.);
+
+    //coshE and sinhE:
+    float cE = sB*cA/sD;
+    float sE = cB/sD;
+
+    //tanh(E/2):
+    float tanhE2 = sE/(1.+cE);
+    float eA = exp(A);
+
+    float end1 = eA*tanhE2;
+    float end2 = eA/tanhE2;
+
+    //above this circle
     HalfSpace d = HalfSpace(Geodesic(end1,end2),1.);
 
     Pentagon P = Pentagon(a,b,c,d,e);
