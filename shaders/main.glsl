@@ -24,6 +24,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     // Normalized pixel coordinates
     vec2 z = normalizeCoords( fragCoord );
+    vec2 mouse = normalizeCoords(iMouse.xy);
+
+    //rotate slowly around the center of the poincare disk for fun
+    float c=cos(iTime/50.);
+    float s=sin(iTime/50.);
+    mat2 rot = mat2(c,s,-s,c);
+   // z=rot*z;
 
     //check if insidePD
     //if not, turn down the exposure
@@ -35,16 +42,23 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         color = darkBlue;
 
         //move to upper half plane for computations
-        z = mouseTransform(z);
-        z = toUH(z);
+        z = toHP(z);
+        vec2 mouseHP = toHP(mouse);
+
+
+        //move the origin of PD to mouse location
+        if(iMouse.z>0.){
+             z = pToOrigin(mouseHP,z);
+        }
+
+
+        //move the origin so it wiggles aound a bit
+        vec2 cent = vec2(1.,1.5)+0.25*vec2(sin(iTime/3.),sin(iTime/2.));
+       // z=originToP(cent, z);
 
 
 
-
-
-
-
-//    Triangle T = createTriangle(7,2,3);
+    //    Triangle T = createTriangle(7,2,3);
 //
 //        if(inside(z,T)){
 //            color=pink;
@@ -67,14 +81,23 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 //
 
-    Pentagon P = createPentagon(1.2+0.1*sin(iTime),1.+0.2*sin(iTime/2.));
+   // Pentagon P = createPentagon(1.3+0.2*sin(iTime),1.3+0.3*sin(iTime/2.));
+
+    float l = asinh(sqrt(3.));
+   // Hexagon P = createHexagon(l+0.1*cos(iTime/3.),l+0.1*sin(iTime/2.),l+0.2*sin(iTime));
+    Heptagon P = createHeptagon(1.,1.,0.5,1.1);
+
 
     if(inside(z,P)){
         color=pink;
     }
 
-    vec2 w = moveInto(z,P);
+    float parity=1.;
+    vec2 w = moveInto(z,P,parity);
     float d = dist(w, P);
+    if(parity==-1.){
+        color=medBlue;
+    }
     if(d<0.015){color=lightPurple;}
 
 

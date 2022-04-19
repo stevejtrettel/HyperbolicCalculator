@@ -21,7 +21,7 @@ bool insidePD( vec2 z )
 
 //apply the mobius transformation taking a point to UHP
 //this is the map z -> (iz+1)/(z+i)
-vec2 toUH( vec2 z ){
+vec2 toHP( vec2 z ){
 
     vec2 num = z+I;
     vec2 denom = mult(I,z)+toC(1.);

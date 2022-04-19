@@ -64,3 +64,19 @@ vec2 reflectIn( vec2 z, HalfSpace hs) {
 
     return z;
 }
+
+
+
+
+//reflect into a half space:
+//if you are inside already, do nothing
+//if you are outside, reflect in the boundary
+vec2 reflectIn( vec2 z, HalfSpace hs, inout float parity) {
+    if(!inside(z,hs)){
+        vec2 res = reflectIn(z,hs.bdy);
+        parity*=-1.;
+        return res;
+    }
+
+    return z;
+}

@@ -200,6 +200,20 @@ vec2 reflectIn(vec2 z, Pentagon P){
 }
 
 
+
+//reflect in each side of the triangle,
+//if the point is on the wrong side of the half space
+vec2 reflectIn(vec2 z, Pentagon P, inout float parity){
+    z = reflectIn(z, P.a, parity);
+    z = reflectIn(z, P.b, parity);
+    z = reflectIn(z, P.c, parity);
+    z = reflectIn(z, P.d, parity);
+    z = reflectIn(z, P.e, parity);
+    return z;
+}
+
+
+
 //iteratively reflect in the triangle until you end up
 //in the fundamental domain
 vec2 moveInto(vec2 z, Pentagon P){
@@ -214,6 +228,25 @@ vec2 moveInto(vec2 z, Pentagon P){
     return z;
 
 }
+
+
+//iteratively reflect until you end up in the domain
+//report the parity of the number of flips:
+vec2 moveInto(vec2 z, Pentagon P, out float parity){
+
+    parity=1.;
+
+    for(int i=0;i<50;i++){
+        z=reflectIn(z,P,parity);
+        if(inside(z,P)){
+            break;
+        }
+    }
+
+    return z;
+
+}
+
 
 
 float dist( vec2 z, Pentagon P){
@@ -240,18 +273,14 @@ Pentagon createPentagon(float A, float B){
     HalfSpace c = HalfSpace(Geodesic(tanh(B/2.),1./tanh(B/2.)),1.);
 
 
-    //HalfSpace c = HalfSpace(Geodesic((cosh(B)-1.)/sinh(B),(cosh(B)+1.)/sinh(B)),1.);
-
-
-
     //below the circle at height A above unit circle
     HalfSpace e = HalfSpace(Geodesic(exp(A),-exp(A)),-1.);
 
 
 
+    //this final circle is the translate of the vertical geodesic along unit circle by E, then dilation z->exp(A)z
+    //the computaiton is annoying because we need tanh(E/2) and coth(E/2) for the endpoints; but need them in terms of A and B
 
-
-    //this final circle is the result of an annoying computation
     float cA = cosh(A);
     float sA = sinh(A);
     float cB = cosh(B);
@@ -284,6 +313,369 @@ Pentagon createPentagon(float A, float B){
 
 
 
+
+
+
+
+
+
+
+
+//------------------------------------------
+//Right Angled Hexagons
+//------------------------------------------
+
+//a  right angled pentagon is the intersection of 5 orthognal half spaces
+//we will call these a, b, c, d, and e
+struct Hexagon{
+    HalfSpace a;
+    HalfSpace b;
+    HalfSpace c;
+    HalfSpace d;
+    HalfSpace e;
+    HalfSpace f;
+};
+
+
+
+
+bool inside(vec2 z, Hexagon H){
+    //check if you are inside all six half-spaces
+    return inside(z,H.a)&&inside(z,H.b)&&inside(z,H.c)&&inside(z,H.d)&&inside(z,H.e)&&inside(z,H.f);
+}
+
+
+
+//reflect in each side of the triangle,
+//if the point is on the wrong side of the half space
+vec2 reflectIn(vec2 z, Hexagon H){
+    z = reflectIn(z, H.a);
+    z = reflectIn(z, H.b);
+    z = reflectIn(z, H.c);
+    z = reflectIn(z, H.d);
+    z = reflectIn(z, H.e);
+    z = reflectIn(z, H.f);
+    return z;
+}
+
+
+
+//reflect in each side of the triangle,
+//if the point is on the wrong side of the half space
+vec2 reflectIn(vec2 z, Hexagon H, inout float parity){
+    z = reflectIn(z, H.a, parity);
+    z = reflectIn(z, H.b, parity);
+    z = reflectIn(z, H.c, parity);
+    z = reflectIn(z, H.d, parity);
+    z = reflectIn(z, H.e, parity);
+    z = reflectIn(z, H.f, parity);
+    return z;
+}
+
+
+//iteratively reflect in the triangle until you end up
+//in the fundamental domain
+vec2 moveInto(vec2 z, Hexagon H){
+
+    for(int i=0;i<50;i++){
+        z=reflectIn(z,H);
+        if(inside(z,H)){
+            break;
+        }
+    }
+
+    return z;
+
+}
+
+
+//iteratively reflect until you end up in the domain
+//report the parity of the number of flips:
+vec2 moveInto(vec2 z, Hexagon H, out float parity){
+
+    parity=1.;
+
+    for(int i=0;i<50;i++){
+        z=reflectIn(z,H,parity);
+        if(inside(z,H)){
+            break;
+        }
+    }
+
+    return z;
+
+}
+
+
+
+float dist( vec2 z, Hexagon H){
+    float d;
+    d = dist(z, H.a.bdy);
+    d = min(d, dist(z, H.b.bdy));
+    d = min(d, dist(z, H.c.bdy));
+    d = min(d, dist(z, H.d.bdy));
+    d = min(d, dist(z, H.e.bdy));
+    d = min(d, dist(z, H.f.bdy));
+    return d;
+}
+
+
+
+Hexagon createHexagon(float x, float y, float z){
+
+    //sinh and cosh of the original side lengths
+    float cx = cosh(x);
+    float cy = cosh(y);
+    float cz = cosh(z);
+
+    float sx = sinh(x);
+    float sy = sinh(y);
+    float sz = sinh(z);
+
+    //compute the opposing side lengths
+    float cX = (cx+cy*cz)/(sy*sz);
+    float cY = (cy+cx*cz)/(sx*sz);
+    float cZ = (cz+cx*cy)/(sx*sy);
+
+    float X = acosh(cX);
+    float Y = acosh(cY);
+    float Z = acosh(cZ);
+
+    float sX = sinh(X);
+    float sY = sinh(Y);
+    float sZ = sinh(Z);
+
+
+    //start computing the edges:
+
+    //the red side is vertical:
+    HalfSpace a = HalfSpace(Geodesic(0.,infty),1.);
+
+    //the yellow side is the unti circle:
+    HalfSpace b = HalfSpace(Geodesic(-1.,1.),1.);
+
+    //the purple side is the big circle at the top
+    HalfSpace f = HalfSpace(Geodesic(exp(Y),-exp(Y)),-1.);
+
+    //the green side is translated along the yellow by distance x
+    HalfSpace c = HalfSpace(Geodesic(tanh(x/2.),1./tanh(x/2.)),1.);
+
+    //the indigo side is translated along the purple by distance z
+    HalfSpace e = HalfSpace(Geodesic(exp(Y)*tanh(z/2.),exp(Y)/tanh(z/2.)),1.);
+
+   //to compute the final blue side, we need the length of the common perpendicular d
+    float cD = sx*sZ;
+    float D = acosh(cD);
+    float sD = sinh(D);
+
+    //we also need the height h
+    float sh = cZ/sD;
+    float h = asinh(sh);
+
+    HalfSpace d = HalfSpace(Geodesic(exp(h)*tanh(D/2.),exp(h)/tanh(D/2.)),1.);
+
+    //finally we have the complete hexagon
+    Hexagon H = Hexagon(a,b,c,d,e,f);
+    return H;
+}
+
+
+
+
+
+
+
+
+
+//------------------------------------------
+//Right Angled Heptagon
+//------------------------------------------
+
+//a  right angled pentagon is the intersection of 5 orthognal half spaces
+//we will call these a, b, c, d, and e
+struct Heptagon{
+    HalfSpace a;
+    HalfSpace b;
+    HalfSpace c;
+    HalfSpace d;
+    HalfSpace e;
+    HalfSpace f;
+    HalfSpace g;
+};
+
+
+
+
+bool inside(vec2 z, Heptagon H){
+    //check if you are inside all six half-spaces
+    return inside(z,H.a)&&inside(z,H.b)&&inside(z,H.c)&&inside(z,H.d)&&inside(z,H.e)&&inside(z,H.f)&&inside(z,H.g);
+}
+
+
+
+//reflect in each side of the triangle,
+//if the point is on the wrong side of the half space
+vec2 reflectIn(vec2 z, Heptagon H){
+    z = reflectIn(z, H.a);
+    z = reflectIn(z, H.b);
+    z = reflectIn(z, H.c);
+    z = reflectIn(z, H.d);
+    z = reflectIn(z, H.e);
+    z = reflectIn(z, H.f);
+    z = reflectIn(z, H.g);
+    return z;
+}
+
+
+
+//reflect in each side of the triangle,
+//if the point is on the wrong side of the half space
+vec2 reflectIn(vec2 z, Heptagon H, inout float parity){
+    z = reflectIn(z, H.a, parity);
+    z = reflectIn(z, H.b, parity);
+    z = reflectIn(z, H.c, parity);
+    z = reflectIn(z, H.d, parity);
+    z = reflectIn(z, H.e, parity);
+    z = reflectIn(z, H.f, parity);
+    z = reflectIn(z, H.g, parity);
+    return z;
+}
+
+
+//iteratively reflect in the triangle until you end up
+//in the fundamental domain
+vec2 moveInto(vec2 z, Heptagon H){
+
+    for(int i=0;i<50;i++){
+        z=reflectIn(z,H);
+        if(inside(z,H)){
+            break;
+        }
+    }
+
+    return z;
+
+}
+
+
+//iteratively reflect until you end up in the domain
+//report the parity of the number of flips:
+vec2 moveInto(vec2 z, Heptagon H, out float parity){
+
+    parity=1.;
+
+    for(int i=0;i<50;i++){
+        z=reflectIn(z,H,parity);
+        if(inside(z,H)){
+            break;
+        }
+    }
+
+    return z;
+
+}
+
+
+
+float dist( vec2 z, Heptagon H){
+    float d;
+    d = dist(z, H.a.bdy);
+    d = min(d, dist(z, H.b.bdy));
+    d = min(d, dist(z, H.c.bdy));
+    d = min(d, dist(z, H.d.bdy));
+    d = min(d, dist(z, H.e.bdy));
+    d = min(d, dist(z, H.f.bdy));
+    d = min(d, dist(z, H.g.bdy));
+    return d;
+}
+
+
+
+Heptagon createHeptagon(float B, float C, float E, float G){
+
+    //sinh and cosh of the original side lengths
+    float cB = cosh(B);
+    float cC = cosh(C);
+    float cE = cosh(E);
+    float cG = cosh(G);
+
+    float sB = sinh(B);
+    float sC = sinh(C);
+    float sE = sinh(E);
+    float sG = sinh(G);
+
+    //compute the side length X of the common perpendicular to A and D:
+    float cX = sB*sC;
+    float X = acosh(cX);
+    float sX = sinh(X);
+
+    //compute the side F, and its sinh/cosh
+    float cF = (cG*cE+cX)/sE*sG;
+    float F = acosh(cF);
+    float sF = sinh(F);
+
+
+    //compute the two subdividsions h and k of A:
+    //then compute the side A itself!
+    float h = asinh(sE*sF/sX);
+    float k = asinh(cC/sX);
+    float A = k+h;
+    float cA = cosh(A);
+    float sA = sinh(A);
+
+
+    // compute the two subdivisions u and v of D
+    //then compute D itself!
+    float u = asinh(sG*sF/sX);
+    float v = asinh(cB/sX);
+    float D = u+v;
+    float cD = cosh(D);
+    float sD = sinh(D);
+
+
+
+
+    //start computing the edges:
+
+
+    //vertical side:
+    HalfSpace a = HalfSpace(Geodesic(0.,infty),1.);
+
+    //first two:
+    HalfSpace b = HalfSpace(Geodesic(-1.,1.),1.);
+
+    HalfSpace c = HalfSpace(Geodesic(tanh(B/2.),1./tanh(B/2.)),1.);
+
+
+    //back two:
+    HalfSpace f = HalfSpace(Geodesic(exp(A)*tanh(G/2.),exp(A)/tanh(G/2.)),1.);
+
+    HalfSpace g = HalfSpace(Geodesic(-exp(A),exp(A)),-1.);
+
+
+
+    //slide vert distance X along perp geodesic (at height k above i):
+    HalfSpace d = HalfSpace(Geodesic(exp(k)*tanh(X/2.),exp(k)/tanh(X/2.)),1.);
+
+
+
+    //need two new lengths here: Y = perpenicular to {A,E} and its height A2:
+    float cY = sF*sG;
+    float Y = acosh(cY);
+    float sY = sinh(Y);
+
+    //alpha is segment along A from TOP to the seg y:
+    float salpha = cF/sY;
+    float alpha = asinh(salpha);
+
+    HalfSpace e = HalfSpace(Geodesic(exp(A-alpha)*tanh(Y/2.),exp(A-alpha)/tanh(Y/2.)),1.);
+
+
+    //finally we have the complete hexagon
+    Heptagon H = Heptagon(a,b,c,d,e,f,g);
+
+    return H;
+}
 
 
 
